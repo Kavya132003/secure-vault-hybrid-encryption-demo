@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Vault - Hybrid Cryptography Demo</title>
+    <style>
+        /* CSS STYLES */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a2e; /* Deep purple background */
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #24243e; /* Darker container */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            width: 90%;
+            max-width: 800px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #00bcd4; /* Cyan highlight */
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 2.5em;
+        }
+        p.subtitle {
+            text-align: center;
+            color: #a0a0a0;
+            margin-bottom: 25px;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: #3c3c5c;
+            margin: 25px 0;
+        }
+        h2 {
+            border-bottom: 2px solid #00bcd4;
+            padding-bottom: 8px;
+            margin-top: 0;
+            color: #e0e0e0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #b0b0b0;
+        }
+        input[type="file"], input[type="text"], input[type="password"] {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0 15px 0;
+            border-radius: 6px;
+            border: 1px solid #3c3c5c;
+            font-size: 16px;
+            background-color: #33334f;
+            color: #e0e0e0;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        #uploadButton {
+            background-color: #4CAF50; /* Green */
+            color: white;
+        }
+        #downloadButton {
+            background-color: #ff9800; /* Orange */
+            color: white;
+        }
+        button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        button:disabled {
+            background-color: #5a5a75;
+            cursor: not-allowed;
+            transform: none;
+        }
+        #uploadStatus, #downloadStatus {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            min-height: 20px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: monospace;
+            line-height: 1.4;
+        }
+        .loading { 
+            background-color: #334466; 
+            color: #2196F3; 
+        }
+        .success { 
+            background-color: #336633; 
+            color: #4CAF50; 
+            border: 1px solid #4CAF50;
+        }
+        .error { 
+            background-color: #663333; 
+            color: #f44336; 
+            border: 1px solid #f44336;
+        }
+        .metric-value {
+            font-weight: bold;
+            color: #00bcd4;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔒 Secure Vault Demo</h1>
+        <p class="subtitle">Hybrid Crypto + Integrity Check + **PBKDF2 Password Layer**</p>
+        
+        <hr>
+        
+        <h2>1. Encrypt & Upload</h2>
+        <label for="fileInput">Select File:</label>
+        <input type="file" id="fileInput"><br>
+        
+        <label for="uploadPasswordInput">Set Password (Required for download):</label>
+        <input type="password" id="uploadPasswordInput" placeholder="Enter a secure password">
+
+        <button onclick="uploadFile()" id="uploadButton" disabled>Encrypt & Upload File</button>
+        <p id="uploadStatus" class="loading">Status: Loading public key...</p>
+        
+        <hr>
+
+        <h2>2. Decrypt & Download</h2>
+        <label for="fileIdInput">File ID (e.g., b19fff1e):</label>
+        <input type="text" id="fileIdInput" placeholder="Enter File ID from upload status">
+        
+        <label for="downloadPasswordInput">Password:</label>
+        <input type="password" id="downloadPasswordInput" placeholder="Enter the password used for encryption">
+
+        <button onclick="downloadFile()" id="downloadButton" disabled>Download & Decrypt</button>
+        <p id="downloadStatus"></p>
+    </div>
+    
+    <script src="client.js"></script>
+</body>
+</html>
